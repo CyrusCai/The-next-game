@@ -3,6 +3,10 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var _ = require('underscore');
 
+//2016.3.7 mongodb
+var mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost/epam');
+
 // include express handlebars (templating engine)
 var exphbs  = require('express-handlebars');
 
@@ -33,6 +37,13 @@ app.use(function (req, res, next) {
 // respond to the get request with the home page
 app.get('/', function (req, res) {
     res.locals.scripts.push('/js/main.js');
+    // console.log(1);
+
+    // var articles =  getArticles();
+    // console.log(2);
+    // console.log(articles);
+    // res.render('home',articles);
+
     res.render('home');
 });
 
@@ -55,7 +66,6 @@ app.get('/articles/:id', function (req, res) {
 
     res.render('articles',{article:data[0]});
   });
-
 });
 
 // respond to the get request with the register page
@@ -93,6 +103,5 @@ var server = require('http').createServer(app);
 server.listen(1337, '127.0.0.1', function () {
   console.log('The Next XYZ is looking good! Open http://localhost:%d to begin.', 1337);
 });
-
 
 

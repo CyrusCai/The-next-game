@@ -23,7 +23,16 @@
 </div>
 <!--End This is the originla part of home-->
 <br/>
-
+{{!-- <!--This is the part using handlerbars framework-->
+<div class="row"  id="articles">
+  {{#each articles}}
+  <div class="col-md-4">
+    <h3 class="text-center">{{title}}</h3>
+    <a href="http://localhost:1337/api/articles/{{id}}"><img src="{{image}}"></a>
+    <p class="text-center">{{summary}}</p>
+  </div>
+  {{/each}}
+</div> --}}
 
 <div class="panel panel-default">
   <div class="panel-heading">
@@ -33,7 +42,7 @@
     <ul>
     	<li class="done">Pull in the above three news articles off of the appropriate API endpoint (http://localhost:1337/api/articles)</li>
     	<li class="done">Include a background image with text on top (and maybe even a nice hover state</li>
-    	<li>Have each one link to it's own page (e.g. http://localhost:1337/api/articles/1)</li>
+    	<li class="done">Have each one link to it's own page (e.g. http://localhost:1337/api/articles/1)</li>
     	<li>You'll then need to build the above page</li>
     </ul>
   </div>
