@@ -10,11 +10,11 @@ helloApp.config(function($routeProvider){
 })
 
 .controller('HomeControlller', function($scope) {
-  
+
 })
 
 .controller('VideosControlller', function($scope) {
-  
+
 })
 
 .controller('QuizControlller', function($scope) {
@@ -40,7 +40,7 @@ helloApp.config(function($routeProvider){
 	}
 
 	$scope.back = function() {
-		
+
 		switch (currentPage) {
 			case 1:
 				alert("You're already at the start!")
@@ -62,7 +62,7 @@ helloApp.config(function($routeProvider){
 				$scope.q3 = true;
 				$scope.q4 = false;
 				currentPage = 3;
-				break;				
+				break;
 
 			case 5:
 				$scope.q4 = true;
@@ -102,7 +102,7 @@ helloApp.config(function($routeProvider){
 				$scope.q4 = false;
 				$scope.q5 = true;
 				currentPage = 5;
-				break;				
+				break;
 
 			default:
 				alert("No more pages!")

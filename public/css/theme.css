@@ -49,3 +49,31 @@ body {
   height: 60px;
   margin-bottom: 30px;
 }
+
+/*styte for jumbotron*/
+.jumbotron{
+  background-image: url("/./img/img4.jpg");
+}
+.jumbotron h1{
+  color:white;
+}
+.jumbotron p{
+  color:white;
+}
+/*style for article img*/
+
+#articles div img{
+  width:360px;
+  height:300px;
+}
+#articles div h3{
+  height:80px;
+}
+#articles div p{
+  height: 200px;
+}
+
+/*tools*/
+.done{
+  color:blue;
+}
