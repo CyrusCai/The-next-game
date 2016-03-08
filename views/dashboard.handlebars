@@ -1,14 +1,32 @@
 <h2>Dashboard</h2>
 <div id="stuff">
-	<h4>Welcome <em>ADD NAME HERE</em></h4>
+	<h4>Welcome <em>{{user.name}}</em></h4>
 
 	{{#each stuff}}
 	<p>{{ greeting }} {{ subject }}</p>
 	{{/each}}
 
 	<hr>
+  <form action = "/dashboard" method="post">
+    <div class="form-group">
+      <label for="title">Title</label>
+      <input name="title" type="name" class="form-control" id="title" placeholder="Title">
+    </div>
+    <div class="form-group">
+      <label for="summary">Summary</label>
+      <input name="summary" type="name" class="form-control" id="summary" placeholder="Summary">
+    </div>
+    <div class="form-group">
+      <label for="author">Author</label>
+      <input name="author" type="name" class="form-control" id="author" placeholder="Author">
+    </div>
+    <div class="form-group">
+      <label for="image">ImageURL</label>
+      <input name="image" type="url" class="form-control" id="image" placeholder="ImageURL">
+    </div>
+    <button type="submit" class="btn btn-inverse btn-lg">Add New Article</button>
 
-	<button class="btn btn-inverse btn-lg">Add New Article</button>
+  </form>
 </div>
 
 <br>

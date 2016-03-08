@@ -5,7 +5,24 @@ var _ = require('underscore');
 
 //2016.3.7 mongodb
 var mongoose = require('mongoose');
+
 mongoose.connect('mongodb://localhost/epam');
+var Article = require('./models/ArticleModel.js');
+var User = require('./models/UserModel.js');
+
+// var Schema = mongoose.Schema;
+
+// //create a  Schema for Articles
+// var ArticleSchema = new Schema({
+//   id:String,
+//   title:String,
+//   summary:String,
+//   date:String,
+//   author:String,
+//   img:String
+// });
+
+// mongoose.model('Article',ArticleSchema);
 
 // include express handlebars (templating engine)
 var exphbs  = require('express-handlebars');
@@ -39,7 +56,7 @@ app.get('/', function (req, res) {
     res.locals.scripts.push('/js/main.js');
     // console.log(1);
 
-    // var articles =  getArticles();
+    // var articles =  loadDate();
     // console.log(2);
     // console.log(articles);
     // res.render('home',articles);
@@ -51,25 +68,25 @@ app.get('/', function (req, res) {
 app.get('/about', function(req, res) {
   res.render('about');
 });
+
 // respond to the get request with the article page
 app.get('/articles/:id', function (req, res) {
-    // res.locals.scripts.push('/js/main.js');
-  var fs = require('fs');
-  var obj;
-  fs.readFile('./data/articles.json', 'utf8', function (err, data) {
-    // console.log(data);
-    if (err) throw err;
-
-    data = _.filter(JSON.parse(data), function(item) {
-        return item.id == req.params.id;
-    });
-
-    res.render('articles',{article:data[0]});
-  });
+ Article.find({},null,{sort:{data:-1}},function(err,data){
+  Article.findById(data[req.params.id-1],function(err,article){
+    console.log(article);
+    if(!err){
+      res.render('articles',{article:article});
+    }else{
+      res.send(404,'Article not found');
+    }
+  })
+});
 });
 
 // respond to the get request with the register page
 app.get('/register', function(req, res) {
+  res.locals.scripts.push('/js/register.js');
+
   res.render('register');
 });
 
@@ -78,19 +95,47 @@ app.post('/register', function(req, res) {
 
   // get the data out of the request (req) object
   // store the user in memory here
-
-  res.redirect('/dashboard');
+  var user = new User(req.body);
+  user.save(function(err,user){
+    if(err){
+       console.log("fail to insert user");
+    }else{
+        console.log("no error");
+        res.render('dashboard',{user:user});
+    }
+  })
 });
 
-
 // respond to the get request with dashboard page (and pass in some data into the template / note this will be rendered server-side)
-app.get('/dashboard', function (req, res) {
+  app.get('/dashboard', function (req, res) {
+  res.locals.scripts.push('/js/dashboard.js');
+
     res.render('dashboard', {
     	stuff: [{
 		    greeting: "Hello",
 		    subject: "World!"
 		}]
     });
+});
+
+// handle the posted article data
+
+app.post('/dashboard', function(req, res) {
+  Article.find({},null,{sort:{data:-1}},function(err,data){
+   // console.log(data.length);
+   var article = new Article(req.body);
+   article.id = data.length+1;
+   // console.log(article);
+
+   article.save(function(err, article){
+    if(err){
+      console.log("fail to insert article");
+    }else{
+     console.log("no error");
+     res.redirect('articles/' + article.id);
+   }
+ });
+ });
 });
 
 // the api (note that typically you would likely organize things a little differently to this)
