@@ -29,7 +29,7 @@ app.set('view engine', 'handlebars');
 require('./server/js/passport.js')();
 
 //set session for user
-app.use(session({ secret: 'anything' }));
+app.use(session({ secret: 'anything', resave:false, saveUninitialized:false}));
 
 // setup passport
 app.use(passport.initialize());
@@ -102,7 +102,7 @@ app.post('/register', function(req, res) {
        console.log("fail to insert user");
     }else{
         console.log("no error");
-        res.render('dashboard',{user:user});
+        res.render('login');
     }
   })
 });

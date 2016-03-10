@@ -5,12 +5,15 @@ var User = require('../../models/UserModel.js');
 
 module.exports = function() {
 
-  passport.use(new LocalStrategy(
+  passport.use(new LocalStrategy({
+    usernameField: 'email',
+
+  },
     function(username, password, done) {
-      User.findOne({ name: username }, function (err, user) {
+      User.findOne({ email: username }, function (err, user) {
         if (err) { return done(err); }
         if (!user) {
-          return done(null, false, { message: 'Incorrect username.' });
+          return done(null, false, { message: 'Incorrect email.' });
         }
         if (!user.validPassword(password)) {
           return done(null, false, { message: 'Incorrect password.' });
