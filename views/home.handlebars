@@ -4,7 +4,7 @@
   <p><a class="btn btn-primary btn-lg" href="/about" role="button">Learn more</a></p>
 </div>
 <!--This is the originla part of home-->
-<div class="row"  id="articles">
+{{!-- <div class="row"  id="articles">
 	<div class="col-md-4">
 		<p class="text-center img article1">
 			Insert Article + Responsive Image Here
@@ -20,12 +20,12 @@
 			Insert Article + Responsive Image Here
 		</p>
 	</div>
-</div>
+</div> --}}
 <!--End This is the originla part of home-->
 <br/>
 <!--This is the part using handlerbars framework-->
 <div class="row"  id="articles">
-  {{#each articles}}
+  {{#each article}}
   <div class="col-md-4">
     <h3 class="text-center">{{title}}</h3>
     <a href="http://localhost:1337/api/articles/{{id}}"><img src="{{image}}"></a>

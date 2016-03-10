@@ -78,3 +78,7 @@ body {
   color:blue;
 }
 
+/*css for dashboard*/
+#dash_author{
+  display: none;
+}

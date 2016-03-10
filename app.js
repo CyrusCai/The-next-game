@@ -1,28 +1,15 @@
 // include and setup express
 var express = require('express');
+var session = require('express-session');
 var bodyParser = require('body-parser');
 var _ = require('underscore');
-
+var passport = require('passport');
 //2016.3.7 mongodb
 var mongoose = require('mongoose');
 
 mongoose.connect('mongodb://localhost/epam');
 var Article = require('./models/ArticleModel.js');
 var User = require('./models/UserModel.js');
-
-// var Schema = mongoose.Schema;
-
-// //create a  Schema for Articles
-// var ArticleSchema = new Schema({
-//   id:String,
-//   title:String,
-//   summary:String,
-//   date:String,
-//   author:String,
-//   img:String
-// });
-
-// mongoose.model('Article',ArticleSchema);
 
 // include express handlebars (templating engine)
 var exphbs  = require('express-handlebars');
@@ -39,6 +26,15 @@ var api = require('./routes/api');
 app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
 
+require('./server/js/passport.js')();
+
+//set session for user
+app.use(session({ secret: 'anything' }));
+
+// setup passport
+app.use(passport.initialize());
+app.use(passport.session());
+
 // express middleware that parser the key-value pairs sent in the request body in the format of our choosing (e.g. json)
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -53,15 +49,10 @@ app.use(function (req, res, next) {
 
 // respond to the get request with the home page
 app.get('/', function (req, res) {
-    res.locals.scripts.push('/js/main.js');
-    // console.log(1);
-
-    // var articles =  loadDate();
-    // console.log(2);
-    // console.log(articles);
-    // res.render('home',articles);
-
-    res.render('home');
+    // res.locals.scripts.push('/js/main.js');
+    Article.find({},null,{sort:{data:-1}},function(err,article){
+      res.render('home',{article:article});
+    })
 });
 
 // respond to the get request with the about page
@@ -69,11 +60,24 @@ app.get('/about', function(req, res) {
   res.render('about');
 });
 
+app.get('/login',function(req,res){
+  res.render('login');
+})
+
+// respond to the get request with the login page
+
+app.post('/login',
+  passport.authenticate('local',
+    {
+      successRedirect: '/dashboard',
+      failureRedirect: '/login'
+    })
+);
+
 // respond to the get request with the article page
 app.get('/articles/:id', function (req, res) {
  Article.find({},null,{sort:{data:-1}},function(err,data){
   Article.findById(data[req.params.id-1],function(err,article){
-    console.log(article);
     if(!err){
       res.render('articles',{article:article});
     }else{
@@ -92,9 +96,6 @@ app.get('/register', function(req, res) {
 
 // handle the posted registration data
 app.post('/register', function(req, res) {
-
-  // get the data out of the request (req) object
-  // store the user in memory here
   var user = new User(req.body);
   user.save(function(err,user){
     if(err){
@@ -107,14 +108,14 @@ app.post('/register', function(req, res) {
 });
 
 // respond to the get request with dashboard page (and pass in some data into the template / note this will be rendered server-side)
-  app.get('/dashboard', function (req, res) {
+app.get('/dashboard', function (req, res) {
   res.locals.scripts.push('/js/dashboard.js');
-
     res.render('dashboard', {
     	stuff: [{
 		    greeting: "Hello",
 		    subject: "World!"
-		}]
+		}],
+    user: req.user
     });
 });
 
@@ -125,6 +126,7 @@ app.post('/dashboard', function(req, res) {
    // console.log(data.length);
    var article = new Article(req.body);
    article.id = data.length+1;
+   article.author = req.body.author;
    // console.log(article);
 
    article.save(function(err, article){

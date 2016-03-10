@@ -9,6 +9,9 @@
 	<hr>
   <form action = "/dashboard" method="post">
     <div class="form-group">
+      <input  value = "{{user.name}}" name="author" id="dash_author">
+    </div>
+    <div class="form-group">
       <label for="title">Title</label>
       <input name="title" type="name" class="form-control" id="title" placeholder="Title">
     </div>
@@ -18,7 +21,7 @@
     </div>
     <div class="form-group">
       <label for="author">Author</label>
-      <input name="author" type="name" class="form-control" id="author" placeholder="Author">
+      <input name="author" type="name" class="form-control" id="author" placeholder="Author" value = "{{user.name}}">
     </div>
     <div class="form-group">
       <label for="image">ImageURL</label>
@@ -36,8 +39,8 @@
   </div>
   <div class="panel-body">
     <ul>
-      <li>Create a article submission page (that the above button links to or shows)</li>
-      <li>Save the contents of this to the articles.json "database" :)</li>
+      <li class="done">Create a article submission page (that the above button links to or shows)</li>
+      <li class="done">Save the contents of this to the articles.json "database" :)</li>
     </ul>
   </div>
 </div>
