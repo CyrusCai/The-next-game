@@ -4,22 +4,6 @@ var _ = require('underscore');
 var article = require('../models/ArticleModel.js');
 
 
-// mongoose.model('Article',ArticleSchema);
-
-// var Article =  mongoose.model('Article');
-
-// note that typically data would NOT be loaded from the filesystem in this manner :)
-// The original router.get('/articles'
-// router.get('/articles', function(req, res, next) {
-
-//  var fs = require('fs');
-//  var obj;
-//  fs.readFile('./data/articles.json', 'utf8', function (err, data) {
-//    if (err) throw err;
-//    res.json(JSON.parse(data));
-//  });
-// });
-
 router.get('/articles',function(req,res,next){
   res.header('Access-Control-Allow-Origin','*');
   res.header('Access-Control-Allow-Headers','X-Requested-Width');

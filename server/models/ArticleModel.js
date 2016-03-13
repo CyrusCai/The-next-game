@@ -1,7 +1,6 @@
-//create a  Schema for Articles
-
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
+
 var ArticleSchema = new Schema({
   id:String,
   title:String,

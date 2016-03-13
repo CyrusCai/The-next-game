@@ -1,13 +1,12 @@
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var mongoose = require('mongoose');
-var User = require('../../models/UserModel.js');
+var User = require('../server/models/UserModel');
 
 module.exports = function() {
 
   passport.use(new LocalStrategy({
     usernameField: 'email',
-
   },
     function(username, password, done) {
       User.findOne({ email: username }, function (err, user) {

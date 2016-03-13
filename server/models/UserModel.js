@@ -10,21 +10,11 @@ var UserSchema = new Schema({
   salt:String
 });
 
-
-// UserSchema.method('validPassword', function(password, callback) {
-//     if (password == this.password) {
-//       return true;
-//     } else {
-//       return false;
-//     }
-// });
-
 UserSchema.pre('save', function(next) {
  if (this.password) {
    this.salt = new Buffer(crypto.randomBytes(16).toString('base64'), 'base64');
    this.password = this.hashPassword(this.password);
  }
-
  next();
 });
 
@@ -37,7 +27,5 @@ UserSchema.methods.hashPassword = function(password) {
 UserSchema.methods.validPassword = function(password) {
   return this.password === this.hashPassword(password);
 };
-
-
 
 module.exports = mongoose.model('User',UserSchema);
